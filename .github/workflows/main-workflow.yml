@@ -7,10 +7,9 @@ on:
     paths:
       - ".github/**"
       - "api-gateway/**"
-      - "winkel-service/**"
-      - "klant-service/**"
-      - "album-service/**"
-      - "artiest-service/**"
+      - "boer-service/**"
+      - "veld-service/**"
+      - "gewas-service/**"
 
 jobs:
   apigateway:
@@ -39,9 +38,9 @@ jobs:
 
       - name: Upload container to Docker Hub with Push
         run: docker push ${{ secrets.DOCKER_USER }}/api-gateway:latest
-  winkelservice:
+  boerservice:
     runs-on: ubuntu-latest
-    name: Java 17 build, test, deliver winkel-service container
+    name: Java 17 build, test, deliver boer-service container
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -54,20 +53,20 @@ jobs:
           distribution: adopt
       
       - name: Build, test and package project
-        working-directory: ./winkel-service
+        working-directory: ./boer-service
         run: mvn package -DskipTests
 
       - name: Docker login
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build
-        run: docker build -t ${{ secrets.DOCKER_USER }}/winkel-service:latest ./winkel-service
+        run: docker build -t ${{ secrets.DOCKER_USER }}/boer-service:latest ./boer-service
 
       - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/winkel-service:latest
-  klantservice:
+        run: docker push ${{ secrets.DOCKER_USER }}/boer-service:latest
+  veldservice:
     runs-on: ubuntu-latest
-    name: Java 17 build, test, deliver klant-service container
+    name: Java 17 build, test, deliver veld-service container
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -80,20 +79,20 @@ jobs:
           distribution: adopt
 
       - name: Build, test and package project
-        working-directory: ./klant-service
+        working-directory: ./veld-service
         run: mvn package -DskipTests
 
       - name: Docker login
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build
-        run: docker build -t ${{ secrets.DOCKER_USER }}/klant-service:latest ./klant-service
+        run: docker build -t ${{ secrets.DOCKER_USER }}/veld-service:latest ./veld-service
 
       - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/klant-service:latest
-  albumservice:
+        run: docker push ${{ secrets.DOCKER_USER }}/veld-service:latest
+  gewasservice:
     runs-on: ubuntu-latest
-    name: Java 17 build, test, deliver album-service container
+    name: Java 17 build, test, deliver gewas-service container
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
@@ -106,40 +105,14 @@ jobs:
           distribution: adopt
         
       - name: Build, test and package project
-        working-directory: ./album-service
+        working-directory: ./gewas-service
         run: mvn package -DskipTests
         
       - name: Docker login
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build
-        run: docker build -t ${{ secrets.DOCKER_USER }}/album-service:latest ./album-service
+        run: docker build -t ${{ secrets.DOCKER_USER }}/gewas-service:latest ./gewas-service
 
       - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/album-service:latest
-  artiestservice:
-    runs-on: ubuntu-latest
-    name: Java 17 build, test, deliver artiest-service container
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          cache: maven
-          distribution: adopt
-        
-      - name: Build, test and package project
-        working-directory: ./artiest-service
-        run: mvn package -DskipTests
-        
-      - name: Docker login
-        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Docker Build
-        run: docker build -t ${{ secrets.DOCKER_USER }}/artiest-service:latest ./artiest-service
-
-      - name: Upload container to Docker Hub with Push
-        run: docker push ${{ secrets.DOCKER_USER }}/artiest-service:latest
+        run: docker push ${{ secrets.DOCKER_USER }}/gewas-service:latest
