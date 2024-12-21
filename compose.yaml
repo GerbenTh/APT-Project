@@ -1,7 +1,7 @@
 services:
   mongodb-gewas:
     image: mongo
-    restart: always
+    restart: on-failure
     environment:
       MONGO_INITDB_DATABASE: mongo-gewas
     ports:
@@ -13,10 +13,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    hostname: mongodb-gewas-host
 
   mysql-boer:
     image: mysql
-    restart: always
+    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: abc123
       MYSQL_DATABASE: boerdb
@@ -29,10 +30,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    hostname: mysql-boer-host
 
   mysql-veld:
     image: mysql
-    restart: always
+    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: abc123
       MYSQL_DATABASE: velddb
@@ -45,52 +47,72 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    hostname: mysql-veld-host
 
   gewas-service:
     depends_on:
       - mongodb-gewas
+    restart: on-failure
     image: gerbendocker354/gewas-service
     ports:
       - 8080:8080
-#    links:
-#      - mongo-gewas
+    links:
+      - mongodb-gewas
     environment:
       MONGODB_PORT: 27017
-      MONGODB_HOST: mongo-gewas
+      MONGODB_HOST: mongodb-gewas-host
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: abc123
+
 
   boer-service:
     depends_on:
       - mysql-boer
+    restart: on-failure
     image: gerbendocker354/boer-service
     ports:
       - 8081:8081
-#    links:
-#      - mysql-boer
+    links:
+      - mysql-boer
     environment:
       MYSQL_DB_USERNAME: root
       MYSQL_DB_PASSWORD: abc123
-      MYSQL_DB_HOST: mysql-boer
-      MYSQL_DB_PORT: 3307
+      MYSQL_DB_HOST: mysql-boer-host
+      MYSQL_DB_PORT: 3306
 
   veld-service:
     depends_on:
-      - gewas-service
-      - boer-service
+      - mysql-veld
+    restart: on-failure
     image: gerbendocker354/veld-service
     ports:
       - 8082:8082
-#    links:
-#      - product-service
-#      - inventory-service
+    links:
+      - gewas-service
+      - boer-service
+      - mysql-veld
     environment:
       BOER_SERVICE_BASEURL: boer-service:8081
-      GEWAS_INFO_SERVICE_BASEURL: gewas-service:8080
+      GEWAS_SERVICE_BASEURL: gewas-service:8080
       MYSQL_DB_USERNAME: root
       MYSQL_DB_PASSWORD: abc123
-      MYSQL_DB_HOST: mysql-veld
-      MYSQL_DB_PORT: 3308
+      MYSQL_DB_HOST: mysql-veld-host
+      MYSQL_DB_PORT: 3306
+
+  api-gateway:
+    depends_on:
+      - boer-service
+    image: gerbendocker354/api-gateway
+    ports:
+      - 8083:8083
+    links:
+      - boer-service
+      - veld-service
+      - gewas-service
+    environment:
+      BOER_SERVICE_BASEURL: boer-service:8081
+      VELD_SERVICE_BASEURL: veld-service:8082
+      GEWAS_SERVICE_BASEURL: gewas-service:8080
 
 #networks:
 #  app-network:

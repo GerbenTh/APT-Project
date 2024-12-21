@@ -7,6 +7,7 @@ import fact.it.veldservice.repository.VeldRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class VeldService {
 
     private VeldRepository veldRepository;
     private VeldConvertor veldConvertor;
+    private WebClient webClient;
 
     @PostConstruct
     public void loadData() {

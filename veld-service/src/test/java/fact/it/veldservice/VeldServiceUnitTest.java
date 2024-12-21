@@ -1,5 +1,6 @@
 package fact.it.veldservice;
 
+import fact.it.veldservice.converter.VeldConvertor;
 import fact.it.veldservice.dto.VeldResponse;
 import fact.it.veldservice.model.Veld;
 import fact.it.veldservice.repository.VeldRepository;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -26,30 +28,38 @@ public class VeldServiceUnitTest {
     @Mock
     private VeldRepository veldRepository;
 
+    @Spy
+    private VeldConvertor veldConvertor;
+
     @Test
     public void getAllVelden() {
-
         // Arrange
+        UUID uuidVeld = UUID.randomUUID();
+        UUID uuidGewas  = UUID.randomUUID();
+        UUID uuidBoer = UUID.randomUUID();
+
         Veld veld = Veld.builder()
-                .uuid(UUID.fromString("uuid1"))
+                .uuid(uuidVeld)
                 .name("test veld")
                 .size("1ha")
                 .location("test location")
-                .boerUuid(UUID.fromString("boer-uuid"))
+                .boerUuid(uuidBoer)
+                .gewasUuid(uuidGewas)
                 .build();
 
-        when(veldRepository.findAll()).thenReturn(Arrays.asList(veld));
+        when(veldRepository.findAll()).thenReturn(List.of(veld));
 
-        // Act
+        //Act
         List<VeldResponse> velden = veldService.getAllVelden();
 
-        // Assert
+        //Assert
         assertEquals(1, velden.size());
-        assertEquals(UUID.fromString("uuid1"), velden.get(0).getUuid());
+        assertEquals(uuidVeld, velden.get(0).getUuid());
         assertEquals("test veld", velden.get(0).getName());
         assertEquals("1ha", velden.get(0).getSize());
         assertEquals("test location", velden.get(0).getLocation());
-        assertEquals(UUID.fromString("boer-uuid"), velden.get(0).getBoerUuid());
+        assertEquals(uuidBoer, velden.get(0).getBoerUuid());
+        assertEquals(uuidGewas, velden.get(0).getGewasUuid());
 
         verify(veldRepository, times(1)).findAll();
     }

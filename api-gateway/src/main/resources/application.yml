@@ -1,0 +1,68 @@
+server:
+  port: 8083
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: INFO
+    reactor.netty: TRACE
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        # get all gewassen
+        - id: gewas-service
+          uri: http://${GEWAS_SERVICE_BASEURL:localhost:8080}
+          predicates:
+            - Path=/gewassen
+            - Method=GET
+          filters:
+            - SetPath=/api/gewassen/
+
+        # get all boeren
+        - id: boer-service
+          uri: http://${BOER_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/boeren
+            - Method=GET
+          filters:
+            -SetPath=/api/boeren/
+
+        # create boer
+        - id: boer-service
+          uri: http://${BOER_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/boeren
+            - Method=POST
+          filters:
+            -SetPath=/api/boeren/
+        
+        # update boer
+        - id: boer-service
+          uri: http://${BOER_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/boeren
+            - Method=PUT
+          filters:
+            -SetPath=/api/boeren/{uuid}
+        
+        # delete boer
+        - id: boer-service
+          uri: http://${BOER_SERVICE_BASEURL:localhost:8081}
+          predicates:
+            - Path=/boeren
+            - Method=DELETE
+          filters:
+            -SetPath=/api/boeren/{uuid}
+
+        # get all velden
+        - id: veld-service
+          uri: http://${VELD_SERVICE_BASEURL:localhost:8082}
+          predicates:
+            - Path=/velden
+            - Method=GET
+          filters:
+            - SetPath=/api/velden/
+

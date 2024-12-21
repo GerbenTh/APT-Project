@@ -25,7 +25,7 @@ public class BoerService {
             List<Boer> boerList = new ArrayList<>();
 
             Boer boer1 = Boer.builder()
-                    .uuid(UUID.randomUUID())
+                    .uuid(UUID.fromString("97338dbf-7257-44a2-95c7-8f4df043b607"))
                     .name("Ties Doe")
                     .age(56)
                     .address("Steenweg 27")

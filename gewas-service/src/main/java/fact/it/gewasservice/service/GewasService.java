@@ -36,7 +36,7 @@ public class GewasService {
             List<Gewas> gewasList = new ArrayList<>();
 
             Gewas gewas1 = Gewas.builder()
-                    .uuid(UUID.randomUUID())
+                    .uuid(UUID.fromString("4c9bdf18-1cb7-437b-8945-daf811fe6df3"))
                     .name("Maïs")
                     .season("Voorjaar")
                     .pricePerTon(100)

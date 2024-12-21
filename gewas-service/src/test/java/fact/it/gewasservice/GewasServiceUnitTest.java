@@ -13,8 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -29,20 +28,24 @@ public class GewasServiceUnitTest {
     @Test
     public void getAllGewassen()
     {
+        UUID uuidGewas = UUID.randomUUID();
+
         // Arrange
         Gewas gewas = Gewas.builder()
-                .uuid(UUID.fromString("uuid1"))
+                .uuid(uuidGewas)
                 .name("test gewas")
                 .season("test season")
                 .pricePerTon(0)
                 .build();
+
+        when(gewasRepository.findAll()).thenReturn(List.of(gewas));
 
         // Act
         List<GewasResponse> gewassen = gewasService.getAllGewassen();
 
         // Assert
         assertEquals(1, gewassen.size());
-        assertEquals(UUID.fromString("uuid1"), gewassen.get(0).getUuid());
+        assertEquals(uuidGewas, gewassen.get(0).getUuid());
         assertEquals("test gewas", gewassen.get(0).getName());
         assertEquals("test season", gewassen.get(0).getSeason());
         assertEquals(0, gewassen.get(0).getPricePerTon());
