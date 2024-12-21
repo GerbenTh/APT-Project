@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class VeldRequest {
+public class GewasDto {
+    private UUID uuid;
     private String name;
-    private String size;
-    private String location;
-    private UUID boerUuid;
-    private UUID gewasUuid;
+    private String season;
+    private double pricePerTon;
 }

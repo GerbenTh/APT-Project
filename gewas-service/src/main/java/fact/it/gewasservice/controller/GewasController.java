@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/gewassen")
@@ -26,5 +27,11 @@ public class GewasController {
     @ResponseStatus(HttpStatus.OK)
     public List<GewasResponse> getAllGewassen() {
         return gewasService.getAllGewassen();
+    }
+
+    @GetMapping("/{uuid}")
+    @ResponseStatus(HttpStatus.OK)
+    public GewasResponse getGewasByUuid(@PathVariable UUID uuid) {
+        return gewasService.getGewasByUuid(uuid);
     }
 }

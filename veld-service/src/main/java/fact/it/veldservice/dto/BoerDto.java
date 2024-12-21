@@ -11,10 +11,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class VeldRequest {
+public class BoerDto {
+    private UUID uuid;
     private String name;
-    private String size;
-    private String location;
-    private UUID boerUuid;
-    private UUID gewasUuid;
+    private int age;
+    private String phoneNumber;
+    private String address;
 }
+
+

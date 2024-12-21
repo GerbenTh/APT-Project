@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -30,28 +31,31 @@ public class BoerServiceUnitTest {
     @Mock
     private BoerRepository boerRepository;
 
+    @Spy
+    // code is simpel genoeg om niet te moeten mocken
     private BoerConvertor boerConvertor;
 
     @Test
     public void getAllBoeren() {
-
         // Arrange
+        UUID uuidBoer = UUID.randomUUID();
+
         Boer boer = Boer.builder()
-                .uuid(UUID.fromString("uuid1"))
+                .uuid(uuidBoer)
                 .name("Test boer")
                 .age(50)
                 .address("Test address")
                 .phoneNumber("012 34 56 78")
                 .build();
 
-        when(boerRepository.findAll()).thenReturn(Arrays.asList(boer));
+        when(boerRepository.findAll()).thenReturn(List.of(boer));
 
         //Act
         List<BoerResponse> boeren = boerService.getAllBoeren();
 
         //Assert
         assertEquals(1, boeren.size());
-        assertEquals(UUID.fromString("uuid1"), boeren.get(0).getUuid());
+        assertEquals(uuidBoer, boeren.get(0).getUuid());
         assertEquals("Test boer", boeren.get(0).getName());
         assertEquals(50, boeren.get(0).getAge());
         assertEquals("Test address", boeren.get(0).getAddress());
@@ -62,41 +66,40 @@ public class BoerServiceUnitTest {
 
     @Test
     public void getBoerenByUuid() {
-        UUID uuid = UUID.randomUUID();
-
         // Arrange
+        UUID uuidBoer = UUID.randomUUID();
+
         Boer boer = Boer.builder()
-                .uuid(uuid)
+                .uuid(uuidBoer)
                 .name("Test boer")
                 .age(50)
                 .address("Test address")
                 .phoneNumber("012 34 56 78")
                 .build();
 
-        when(boerRepository.findAll()).thenReturn(Arrays.asList(boer));
+        when(boerRepository.findByUuid(uuidBoer)).thenReturn(Optional.of(boer));
 
         //Act
-        BoerResponse boerResponse = boerService.getBoerByUuid(uuid);
+        BoerResponse boerResponse = boerService.getBoerByUuid(uuidBoer);
 
         //Assert
-        assertEquals(uuid, boerResponse.getUuid());
+        assertEquals(uuidBoer, boerResponse.getUuid());
         assertEquals("Test boer", boerResponse.getName());
         assertEquals(50, boerResponse.getAge());
         assertEquals("Test address", boerResponse.getAddress());
         assertEquals("012 34 56 78", boerResponse.getPhoneNumber());
 
-        verify(boerRepository, times(1)).findBoerByUuid(uuid);
+        verify(boerRepository, times(1)).findByUuid(uuidBoer);
     }
 
     @Test
     public void testCreateBoer() {
-
         // Arrange
         BoerRequest boerRequest = BoerRequest.builder()
-                .name("Test boer")
-                .age(50)
-                .address("Test address")
-                .phoneNumber("012 34 56 78")
+                .name("Boer Updated")
+                .age(60)
+                .address("updated address")
+                .phoneNumber("987 65 43 21")
                 .build();
 
         // Act
@@ -108,12 +111,12 @@ public class BoerServiceUnitTest {
 
     @Test
     public void testUpdateBoer() {
-
-        UUID uuid = UUID.randomUUID();
-
         // Arrange
+        UUID uuidBoer = UUID.randomUUID();
+
         Boer boer = Boer.builder()
-                .uuid(uuid)
+                .id(0L)
+                .uuid(uuidBoer)
                 .name("Test boer")
                 .age(50)
                 .address("Test address")
@@ -127,48 +130,37 @@ public class BoerServiceUnitTest {
                 .phoneNumber("987 65 43 21")
                 .build();
 
-        when(boerRepository.findAll()).thenReturn(Arrays.asList(boer));
+        when(boerRepository.findByUuid(uuidBoer)).thenReturn(Optional.of(boer));
 
-        Optional<Boer> optionalBoer = boerRepository.findByUuid(uuid);
-
-        if (optionalBoer.isPresent()) {
-            Boer updatedBoer = optionalBoer.get();
-
-            // Act
-            updatedBoer = boerConvertor.convert(boer.getId(), uuid, boerRequest);
-            when(boerRepository.findAll()).thenReturn(Arrays.asList(updatedBoer));
-        }
-
+        // Act
+        boerService.updateBoer(uuidBoer, boerRequest);
 
         // Assert
-        verify(boerRepository, times(2)).save(any(Boer.class));
-
+        verify(boerRepository, times(1)).findByUuid(uuidBoer);
+        verify(boerRepository, times(1)).save(any(Boer.class));
     }
-
 
     @Test
     public void testDeleteBoer() {
-
-        UUID uuid = UUID.randomUUID();
+        UUID uuidBoer = UUID.randomUUID();
 
         // Arrange
         Boer boer = Boer.builder()
-                .uuid(uuid)
+                .uuid(uuidBoer)
                 .name("Test boer")
                 .age(50)
                 .address("Test address")
                 .phoneNumber("012 34 56 78")
                 .build();
 
-        when(boerRepository.findAll()).thenReturn(Arrays.asList(boer));
-        Optional<Boer> optionalBoer = boerRepository.findByUuid(uuid);
+        when(boerRepository.findByUuid(uuidBoer)).thenReturn(Optional.of(boer));
+        Optional<Boer> optionalBoer = boerRepository.findByUuid(uuidBoer);
 
         // Act
-        boerService.deleteBoer(uuid);
+        boerService.deleteBoer(uuidBoer);
 
         // Assert
         verify(boerRepository, times(1)).delete(optionalBoer.get());
-
-
     }
 }
+

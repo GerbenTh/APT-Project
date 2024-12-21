@@ -26,5 +26,5 @@ public class Veld {
     private String size;
     private String location;
     private UUID boerUuid;
-
+    private UUID gewasUuid;
 }

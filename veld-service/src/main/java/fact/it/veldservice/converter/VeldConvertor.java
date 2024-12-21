@@ -14,6 +14,7 @@ public class VeldConvertor {
                 .size(veld.getSize())
                 .location(veld.getLocation())
                 .boerUuid(veld.getBoerUuid())
+                .gewasUuid(veld.getGewasUuid())
                 .build();
     }
 }

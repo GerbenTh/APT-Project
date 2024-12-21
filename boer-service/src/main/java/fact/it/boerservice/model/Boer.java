@@ -25,5 +25,5 @@ public class Boer {
     private int age;
     private String phoneNumber;
     private String address;
-    private List<UUID> veldIds;
+
 }

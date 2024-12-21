@@ -31,6 +31,7 @@ public class VeldService {
                     .size("1.5 ha")
                     .location("Spreeuwerstraat")
                     .boerUuid(UUID.fromString("97338dbf-7257-44a2-95c7-8f4df043b607"))
+                    .gewasUuid(UUID.fromString("4c9bdf18-1cb7-437b-8945-daf811fe6df3"))
                     .build();
 
             Veld veld2 = Veld.builder()
@@ -39,6 +40,7 @@ public class VeldService {
                     .size("0.9 ha")
                     .location("Spreeuwerstraat")
                     .boerUuid(UUID.fromString("97338dbf-7257-44a2-95c7-8f4df043b607"))
+                    .gewasUuid(UUID.fromString("4c9bdf18-1cb7-437b-8945-daf811fe6df3"))
                     .build();
 
             Veld veld3 = Veld.builder()
@@ -47,6 +49,7 @@ public class VeldService {
                     .size("1.2 ha")
                     .location("Spreeuwerstraat")
                     .boerUuid(UUID.fromString("97338dbf-7257-44a2-95c7-8f4df043b607"))
+                    .gewasUuid(UUID.fromString("4c9bdf18-1cb7-437b-8945-daf811fe6df3"))
                     .build();
 
 

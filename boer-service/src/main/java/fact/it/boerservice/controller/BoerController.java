@@ -26,7 +26,7 @@ public class BoerController {
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public BoerResponse getBoerById(@PathVariable UUID uuid) {
+    public BoerResponse getBoerByUuid(@PathVariable UUID uuid) {
         return boerService.getBoerByUuid(uuid);
     }
 

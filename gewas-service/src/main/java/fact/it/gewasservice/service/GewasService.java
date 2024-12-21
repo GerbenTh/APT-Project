@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -67,6 +68,21 @@ public class GewasService {
         List<Gewas> gewassen = gewasRepository.findAll();
 
         return gewassen.stream().map(this::mapToGewasResponse).toList();
+    }
+
+    public GewasResponse getGewasByUuid(UUID uuid) {
+        Optional<Gewas> gewasOptional = gewasRepository.findByUuid(uuid);
+        if (gewasOptional.isPresent()) {
+            Gewas gewas = gewasOptional.get();
+            return GewasResponse.builder()
+                    .uuid(gewas.getUuid())
+                    .name(gewas.getName())
+                    .season(gewas.getSeason())
+                    .pricePerTon(gewas.getPricePerTon())
+                    .build();
+        }
+
+        throw new RuntimeException("gewas not found");
     }
 
     private GewasResponse mapToGewasResponse(Gewas gewas) {

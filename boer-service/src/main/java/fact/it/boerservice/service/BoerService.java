@@ -107,8 +107,8 @@ public class BoerService {
 
         if (boerOptional.isPresent()){
             boerRepository.delete(boerOptional.get());
+        } else {
+            throw new RuntimeException("boer not found");
         }
-
-        throw new RuntimeException("boer not found");
     }
 }
