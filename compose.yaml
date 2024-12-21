@@ -6,8 +6,8 @@ services:
       MONGO_INITDB_DATABASE: mongo-gewas
     ports:
       - "27017:27017" # Host Port:Container Port
-    networks:
-      - app-network
+#    networks:
+#      - app-network
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 10s
@@ -22,8 +22,8 @@ services:
       MYSQL_DATABASE: boerdb
     ports:
       - "3307:3306" # Host Port:Container Port
-    networks:
-      - app-network
+#    networks:
+#      - app-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pexamplepassword"]
       interval: 10s
@@ -38,14 +38,60 @@ services:
       MYSQL_DATABASE: velddb
     ports:
       - "3308:3306" # Host Port:Container Port
-    networks:
-      - app-network
+#    networks:
+#      - app-network
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pexamplepassword"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-networks:
-  app-network:
-    driver: bridge
+  gewas-service:
+    depends_on:
+      - mongo-gewas
+    image: GerbenTh/gewas-service
+    ports:
+      - 8080:8080
+    links:
+      - mongo-gewas
+    environment:
+      MONGODB_PORT: 27017
+      MONGODB_HOST: mongo-gewas
+      MONGODB_USERNAME: root
+      MONGODB_PASSWORD: abc123
+
+  boer-service:
+    depends_on:
+      - mysql-boer
+    image: GerbenTh/boer-service
+    ports:
+      - 8081:8081
+    links:
+      - mysql-boer
+    environment:
+      MYSQL_DB_USERNAME: root
+      MYSQL_DB_PASSWORD: abc123
+      MYSQL_DB_HOST: mysql-boer
+      MYSQL_DB_PORT: 3307
+
+  veld-service:
+    depends_on:
+      - gewas-service
+      - boer-service
+    image: GerbenTh/veld-service
+    ports:
+      - 8082:8082
+#    links:
+#      - product-service
+#      - inventory-service
+    environment:
+      BOER_SERVICE_BASEURL: boer-service:8081
+      GEWAS_INFO_SERVICE_BASEURL: gewas-service:8080
+      MYSQL_DB_USERNAME: root
+      MYSQL_DB_PASSWORD: abc123
+      MYSQL_DB_HOST: mysql-veld
+      MYSQL_DB_PORT: 3308
+
+#networks:
+#  app-network:
+#  driver: bridge

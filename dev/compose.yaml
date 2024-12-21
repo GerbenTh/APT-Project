@@ -1,0 +1,51 @@
+services:
+  dev-mongodb-gewas:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: mongo-gewas
+    ports:
+      - "27117:27017" # Host Port:Container Port
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dev-mysql-boer:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+      MYSQL_DATABASE: boerdb
+    ports:
+      - "3317:3306" # Host Port:Container Port
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pexamplepassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  dev-mysql-veld:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123
+      MYSQL_DATABASE: velddb
+    ports:
+      - "3318:3306" # Host Port:Container Port
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pexamplepassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  app-network:
+    driver: bridge
