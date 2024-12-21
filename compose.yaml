@@ -48,12 +48,12 @@ services:
 
   gewas-service:
     depends_on:
-      - mongo-gewas
-    image: GerbenTh/gewas-service
+      - mongodb-gewas
+    image: gerbendocker354/gewas-service
     ports:
       - 8080:8080
-    links:
-      - mongo-gewas
+#    links:
+#      - mongo-gewas
     environment:
       MONGODB_PORT: 27017
       MONGODB_HOST: mongo-gewas
@@ -63,11 +63,11 @@ services:
   boer-service:
     depends_on:
       - mysql-boer
-    image: GerbenTh/boer-service
+    image: gerbendocker354/boer-service
     ports:
       - 8081:8081
-    links:
-      - mysql-boer
+#    links:
+#      - mysql-boer
     environment:
       MYSQL_DB_USERNAME: root
       MYSQL_DB_PASSWORD: abc123
@@ -78,7 +78,7 @@ services:
     depends_on:
       - gewas-service
       - boer-service
-    image: GerbenTh/veld-service
+    image: gerbendocker354/veld-service
     ports:
       - 8082:8082
 #    links:
