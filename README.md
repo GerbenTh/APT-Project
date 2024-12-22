@@ -19,7 +19,7 @@ Een boer kan zijn welke velden hij allemaal heeeft en welke gewassen hier op sta
 
 ## System diagram
 
-![System diagram](./erd.png)
+![System diagram](./SystemDiagram.png)
 
 ## Endpoints:
 
