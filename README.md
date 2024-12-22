@@ -26,10 +26,10 @@ Een boer kan zijn welke velden hij allemaal heeeft en welke gewassen hier op sta
 Hier is een oplijsting van al de beschikbare endpoints
 
 ### 1. GET /boeren -> Get all boeren
-### 3. GET /velden -> Get all velden
-### 4. GET /gewassen -> Get all gewassen
-### 2. GET /boeren/{uuid} -> Get 1 boer by uuid
-### 2. GET /gewassen/{uuid} -> Get 1 gewas by uuid
-### 5. POST /boeren (AUTH) -> Save a boer
-### 6. PUT /boeren{uuid} (AUTH) -> Update a boer
-### 6. DELETE /boeren/{uuid} (AUTH) -> Delete a boer
+### 2. GET /velden -> Get all velden
+### 3. GET /gewassen -> Get all gewassen
+### 4. GET /boeren/{uuid} -> Get 1 boer by uuid
+### 5. GET /gewassen/{uuid} -> Get 1 gewas by uuid
+### 6. POST /boeren (AUTH) -> Save a boer
+### 7. PUT /boeren{uuid} (AUTH) -> Update a boer
+### 8. DELETE /boeren/{uuid} (AUTH) -> Delete a boer
