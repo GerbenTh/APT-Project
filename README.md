@@ -17,6 +17,10 @@ Een boer kan zijn welke velden hij allemaal heeeft en welke gewassen hier op sta
 
 ![ERD Diagram](./erd.png)
 
+## System diagram
+
+![System diagram](./erd.png)
+
 ## Endpoints:
 
 Hier is een oplijsting van al de beschikbare endpoints
