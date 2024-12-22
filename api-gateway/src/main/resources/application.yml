@@ -28,7 +28,7 @@ spring:
             - Path=/boeren
             - Method=GET
           filters:
-            -SetPath=/api/boeren/
+            - SetPath=/api/boeren/
 
         # create boer
         - id: boer-service
@@ -37,7 +37,7 @@ spring:
             - Path=/boeren
             - Method=POST
           filters:
-            -SetPath=/api/boeren/
+            - SetPath=/api/boeren/
         
         # update boer
         - id: boer-service
@@ -46,7 +46,7 @@ spring:
             - Path=/boeren
             - Method=PUT
           filters:
-            -SetPath=/api/boeren/{uuid}
+            - SetPath=/api/boeren/{uuid}
         
         # delete boer
         - id: boer-service
@@ -55,7 +55,7 @@ spring:
             - Path=/boeren
             - Method=DELETE
           filters:
-            -SetPath=/api/boeren/{uuid}
+            - SetPath=/api/boeren/{uuid}
 
         # get all velden
         - id: veld-service

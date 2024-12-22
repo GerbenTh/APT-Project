@@ -63,6 +63,7 @@ services:
       MONGODB_HOST: mongodb-gewas-host
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: abc123
+    hostname: gewas-service-host
 
 
   boer-service:
@@ -79,6 +80,7 @@ services:
       MYSQL_DB_PASSWORD: abc123
       MYSQL_DB_HOST: mysql-boer-host
       MYSQL_DB_PORT: 3306
+    hostname: boer-service-host
 
   veld-service:
     depends_on:
@@ -92,17 +94,18 @@ services:
       - boer-service
       - mysql-veld
     environment:
-      BOER_SERVICE_BASEURL: boer-service:8081
-      GEWAS_SERVICE_BASEURL: gewas-service:8080
+      BOER_SERVICE_BASEURL: boer-service-host:8081
+      GEWAS_SERVICE_BASEURL: gewas-service-host:8080
       MYSQL_DB_USERNAME: root
       MYSQL_DB_PASSWORD: abc123
       MYSQL_DB_HOST: mysql-veld-host
       MYSQL_DB_PORT: 3306
+    hostname: veld-service-host
 
   api-gateway:
     depends_on:
       - boer-service
-    image: gerbendocker354/api-gateway
+    image: gerbendocker354/api-gateway:latest
     ports:
       - 8083:8083
     links:
@@ -110,9 +113,9 @@ services:
       - veld-service
       - gewas-service
     environment:
-      BOER_SERVICE_BASEURL: boer-service:8081
-      VELD_SERVICE_BASEURL: veld-service:8082
-      GEWAS_SERVICE_BASEURL: gewas-service:8080
+      BOER_SERVICE_BASEURL: boer-service-host:8081
+      VELD_SERVICE_BASEURL: veld-service-host:8082
+      GEWAS_SERVICE_BASEURL: gewas-service-host:8080
 
 #networks:
 #  app-network:

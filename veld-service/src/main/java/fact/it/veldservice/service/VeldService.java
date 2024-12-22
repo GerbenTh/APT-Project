@@ -72,13 +72,13 @@ public class VeldService {
 
         for (var veld : velden) {
 
-            BoerDto boer = webClient.get().uri("http://localhost:8081/api/boeren/",
+            BoerDto boer = webClient.get().uri(System.getenv("BOER_SERVICE_BASEURL"),
                             uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getBoerUuid())).build())
                     .retrieve()
                     .bodyToMono(BoerDto.class)
                     .block();
 
-            GewasDto gewas = webClient.get().uri("http://localhost:8080/api/gewassen/",
+            GewasDto gewas = webClient.get().uri(System.getenv("GEWAS_SERVICE_BASEURL"),
                             uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getGewasUuid())).build())
                     .retrieve()
                     .bodyToMono(GewasDto.class)
