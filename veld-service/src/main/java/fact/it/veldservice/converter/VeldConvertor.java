@@ -12,19 +12,7 @@ public class VeldConvertor {
 
     private WebClient webClient;
 
-    public VeldResponse convert(Veld veld) {
-
-        BoerDto boer = webClient.get().uri("http://localhost:8081/api/boeren/",
-                                            uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getBoerUuid())).build())
-                .retrieve()
-                .bodyToMono(BoerDto.class)
-                .block();
-
-        GewasDto gewas = webClient.get().uri("http://localhost:8080/api/gewassen/",
-                        uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getGewasUuid())).build())
-                .retrieve()
-                .bodyToMono(GewasDto.class)
-                .block();
+    public VeldResponse convert(Veld veld, BoerDto boer, GewasDto gewas) {
 
 
         return VeldResponse.builder()

@@ -1,6 +1,8 @@
 package fact.it.veldservice.service;
 
 import fact.it.veldservice.converter.VeldConvertor;
+import fact.it.veldservice.dto.BoerDto;
+import fact.it.veldservice.dto.GewasDto;
 import fact.it.veldservice.dto.VeldResponse;
 import fact.it.veldservice.model.Veld;
 import fact.it.veldservice.repository.VeldRepository;
@@ -69,7 +71,20 @@ public class VeldService {
         List<VeldResponse> veldResponses = new ArrayList<>();
 
         for (var veld : velden) {
-            veldResponses.add(veldConvertor.convert(veld));
+
+            BoerDto boer = webClient.get().uri("http://localhost:8081/api/boeren/",
+                            uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getBoerUuid())).build())
+                    .retrieve()
+                    .bodyToMono(BoerDto.class)
+                    .block();
+
+            GewasDto gewas = webClient.get().uri("http://localhost:8080/api/gewassen/",
+                            uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getGewasUuid())).build())
+                    .retrieve()
+                    .bodyToMono(GewasDto.class)
+                    .block();
+
+            veldResponses.add(veldConvertor.convert(veld, boer, gewas));
         }
 
         return veldResponses;

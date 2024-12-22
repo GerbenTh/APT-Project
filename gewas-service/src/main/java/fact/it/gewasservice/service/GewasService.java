@@ -19,16 +19,6 @@ public class GewasService {
 
     private final GewasRepository gewasRepository;
 
-//    public void createGewas(GewasRequest gewasRequest) {
-//        Gewas gewas = Gewas.builder()
-//                .name(gewasRequest.getName())
-//                .season(gewasRequest.getSeason())
-//                .pricePerTon(gewasRequest.getPricePerTon())
-//                .build();
-//
-//        gewasRepository.save(gewas);
-//    }
-
     @PostConstruct
     public void loadData() {
         if(gewasRepository.count() <= 0){
