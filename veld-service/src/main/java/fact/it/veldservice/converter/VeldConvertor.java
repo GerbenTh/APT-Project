@@ -10,18 +10,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class VeldConvertor {
 
-    private WebClient webClient;
-
-    public VeldResponse convert(Veld veld, BoerDto boer, GewasDto gewas) {
-
+    public VeldResponse convert(Veld veld) {
 
         return VeldResponse.builder()
                 .uuid(veld.getUuid())
                 .name(veld.getName())
                 .size(veld.getSize())
                 .location(veld.getLocation())
-                .boerDto(boer)
-                .gewasDto(gewas)
+                .boerUuid(veld.getBoerUuid())
+                .gewasUuid(veld.getGewasUuid())
                 .build();
     }
 }

@@ -16,6 +16,6 @@ public class VeldResponse {
     private String name;
     private String size;
     private String location;
-    private BoerDto boerDto;
-    private GewasDto gewasDto;
+    private UUID boerUuid;
+    private UUID gewasUuid;
 }
