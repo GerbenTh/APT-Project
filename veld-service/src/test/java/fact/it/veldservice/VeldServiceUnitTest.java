@@ -1,6 +1,8 @@
 package fact.it.veldservice;
 
 import fact.it.veldservice.converter.VeldConvertor;
+import fact.it.veldservice.dto.BoerDto;
+import fact.it.veldservice.dto.GewasDto;
 import fact.it.veldservice.dto.VeldResponse;
 import fact.it.veldservice.model.Veld;
 import fact.it.veldservice.repository.VeldRepository;
@@ -38,6 +40,21 @@ public class VeldServiceUnitTest {
         UUID uuidGewas  = UUID.randomUUID();
         UUID uuidBoer = UUID.randomUUID();
 
+        BoerDto boer = BoerDto.builder()
+                .uuid(uuidBoer)
+                .name("Guido Truyen")
+                .age(45)
+                .address("Waarslaan 48")
+                .phoneNumber("089 52 74 14")
+                .build();
+
+        GewasDto gewas = GewasDto.builder()
+                .uuid(uuidGewas)
+                .name("Maïs")
+                .season("Voorjaar")
+                .pricePerTon(100)
+                .build();
+
         Veld veld = Veld.builder()
                 .uuid(uuidVeld)
                 .name("test veld")
@@ -46,6 +63,7 @@ public class VeldServiceUnitTest {
                 .boerUuid(uuidBoer)
                 .gewasUuid(uuidGewas)
                 .build();
+
 
         when(veldRepository.findAll()).thenReturn(List.of(veld));
 
@@ -58,8 +76,8 @@ public class VeldServiceUnitTest {
         assertEquals("test veld", velden.get(0).getName());
         assertEquals("1ha", velden.get(0).getSize());
         assertEquals("test location", velden.get(0).getLocation());
-        assertEquals(uuidBoer, velden.get(0).getBoerUuid());
-        assertEquals(uuidGewas, velden.get(0).getGewasUuid());
+        assertEquals(boer, velden.get(0).getBoerDto());
+        assertEquals(gewas, velden.get(0).getGewasDto());
 
         verify(veldRepository, times(1)).findAll();
     }
