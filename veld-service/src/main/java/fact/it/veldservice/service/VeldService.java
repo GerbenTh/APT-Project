@@ -8,6 +8,8 @@ import fact.it.veldservice.model.Veld;
 import fact.it.veldservice.repository.VeldRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -17,11 +19,19 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class VeldService {
 
     private VeldRepository veldRepository;
     private VeldConvertor veldConvertor;
     private WebClient webClient;
+
+    @Value("${gewasservice.baseurl}")
+    private String gewasServiceBaseUrl;
+
+    @Value("${boerservice.baseurl}")
+    private String boerServiceBaseUrl;
+
 
     @PostConstruct
     public void loadData() {
@@ -72,13 +82,13 @@ public class VeldService {
 
         for (var veld : velden) {
 
-            BoerDto boer = webClient.get().uri(System.getenv("BOER_SERVICE_BASEURL"),
+            BoerDto boer = webClient.get().uri(boerServiceBaseUrl,
                             uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getBoerUuid())).build())
                     .retrieve()
                     .bodyToMono(BoerDto.class)
                     .block();
 
-            GewasDto gewas = webClient.get().uri(System.getenv("GEWAS_SERVICE_BASEURL"),
+            GewasDto gewas = webClient.get().uri(gewasServiceBaseUrl,
                             uriBuilder -> uriBuilder.queryParam(String.valueOf(veld.getGewasUuid())).build())
                     .retrieve()
                     .bodyToMono(GewasDto.class)
