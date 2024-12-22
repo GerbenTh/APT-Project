@@ -3,6 +3,7 @@
 ## Thema: Boer, veld en gewas management systeem
 
 Met dit microservices project kan een boer zijn velden en gewassen beheren.
+Een boer kan zijn welke velden hij allemaal heeeft en welke gewassen hier op staan.
 
 ## Microservices:
 
@@ -25,6 +26,6 @@ Hier is een oplijsting van al de beschikbare endpoints
 ### 4. GET /gewassen -> Get all gewassen
 ### 2. GET /boeren/{uuid} -> Get 1 boer by uuid
 ### 2. GET /gewassen/{uuid} -> Get 1 gewas by uuid
-### 5. POST /boeren -> Save a boer
-### 6. PUT /boeren{uuid} -> Update a boer
-### 6. DELETE /boeren/{uuid} -> Delete a boer
+### 5. POST /boeren (AUTH) -> Save a boer
+### 6. PUT /boeren{uuid} (AUTH) -> Update a boer
+### 6. DELETE /boeren/{uuid} (AUTH) -> Delete a boer
